@@ -1,0 +1,91 @@
+erDiagram
+    MALLS ||--o{ SHOPS : contains
+    SHOPS ||--o{ PRODUCTS : sells
+    CATEGORIES ||--o{ PRODUCTS : classifies
+    SHOPS ||--o{ EMPLOYEES : employs
+    SHOPS ||--o{ INVOICES : generates
+    CUSTOMERS ||--o{ INVOICES : makes
+    EMPLOYEES ||--o{ INVOICES : processes
+    INVOICES ||--o{ INVOICE_ITEMS : contains
+    PRODUCTS ||--o{ INVOICE_ITEMS : included
+    INVOICES ||--o{ PAYMENTS : receives
+    PAYMENTS ||--o{ REFUNDS : may_have
+
+    MALLS {
+        int mall_id PK
+        varchar mall_name
+        varchar city
+        varchar state
+    }
+
+    SHOPS {
+        int shop_id PK
+        int mall_id FK
+        varchar shop_name
+        varchar floor_number
+        varchar status
+    }
+
+    CATEGORIES {
+        int category_id PK
+        varchar category_name
+    }
+
+    PRODUCTS {
+        int product_id PK
+        int shop_id FK
+        int category_id FK
+        varchar product_name
+        varchar sku
+        decimal unit_price
+        int stock_quantity
+    }
+
+    CUSTOMERS {
+        int customer_id PK
+        varchar customer_name
+        varchar email
+        varchar phone
+    }
+
+    EMPLOYEES {
+        int employee_id PK
+        int shop_id FK
+        varchar employee_name
+        varchar designation
+    }
+
+    INVOICES {
+        bigint invoice_id PK
+        varchar invoice_number
+        int shop_id FK
+        int customer_id FK
+        decimal total_amount
+        varchar invoice_status
+    }
+
+    INVOICE_ITEMS {
+        bigint invoice_item_id PK
+        bigint invoice_id FK
+        int product_id FK
+        int quantity
+        decimal unit_price
+        decimal line_total
+    }
+
+    PAYMENTS {
+        bigint payment_id PK
+        bigint invoice_id FK
+        varchar transaction_reference
+        decimal amount
+        varchar payment_method
+        varchar payment_status
+    }
+
+    REFUNDS {
+        int refund_id PK
+        bigint payment_id FK
+        varchar refund_reference
+        decimal refund_amount
+        varchar refund_status
+    }
